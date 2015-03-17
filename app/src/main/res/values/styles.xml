@@ -1,8 +1,16 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorPrimaryDark">@android:color/darker_gray</item>
     </style>
 
+    <style name="TextStyle.Title" parent="Base.TextAppearance.AppCompat.Headline">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TextStyle.Subtitle" parent="Base.TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>
