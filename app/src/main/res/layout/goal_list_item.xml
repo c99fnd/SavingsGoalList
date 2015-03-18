@@ -31,12 +31,11 @@
                 android:gravity="center" />
 
             <TextView
-                android:id="@+id/list_item_goal"
+                android:id="@+id/list_item_subtitle"
                 style="@style/TextStyle.Subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="1,345 out of 3,500" />
+                android:gravity="center" />
 
             <ProgressBar
                 android:id="@+id/list_item_progress"
