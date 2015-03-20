@@ -11,16 +11,18 @@ import com.fredde.savingsgoallist.data.GoalItem;
 import com.fredde.savingsgoallist.data.GoalItemLoaderTask;
 import com.fredde.savingsgoallist.http.DownloadJSonTask;
 import com.fredde.savingsgoallist.http.DownloadListener;
-import com.fredde.savingsgoallist.ui.fragments.CreateNewGoalFragment;
-import com.fredde.savingsgoallist.ui.fragments.GoalDetailsFragment;
+import com.fredde.savingsgoallist.ui.fragments.DetailsFragment;
 import com.fredde.savingsgoallist.ui.fragments.GoalsListFragment;
-import com.fredde.savingsgoallist.utils.DebugUtils;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity implements GoalsListFragment.OnGoalSelectedListener, DownloadListener, GoalItemLoaderTask.LoadListener {
+public class MainActivity extends ActionBarActivity implements GoalsListCallback, DownloadListener, GoalItemLoaderTask.LoadListener {
+
+    private static final String LIST_FRAGMENT_TAG = "listfragment";
+    private static final String DETAILS_FRAGMENT_TAG = "detailsfragment";
 
     private final String BASE_URL = "http://qapital-ios-testtask.herokuapp.com/";
     private final String SAVINGS = BASE_URL + "savingsgoals";
@@ -28,6 +30,7 @@ public class MainActivity extends ActionBarActivity implements GoalsListFragment
 
     List<GoalItem> mData = new ArrayList<>();
     GoalItemLoaderTask mLoadGoalsTask;
+    private GoalItem mSelectedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +38,16 @@ public class MainActivity extends ActionBarActivity implements GoalsListFragment
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new GoalsListFragment())
+                    .add(R.id.container, new GoalsListFragment(), LIST_FRAGMENT_TAG)
                     .commit();
         }
+        Picasso.with(getApplicationContext()).setIndicatorsEnabled(true);
+        Picasso.with(getApplicationContext()).setLoggingEnabled(true);
 
         mLoadGoalsTask = new GoalItemLoaderTask(mData, this);
         DownloadJSonTask task = new DownloadJSonTask(this);
         task.execute(SAVINGS);
+
     }
 
     @Override
@@ -54,7 +60,7 @@ public class MainActivity extends ActionBarActivity implements GoalsListFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_goal:
-                doCreateNewGoal();
+                /* Not implemented. */
                 return true;
             default:
                 return false;
@@ -62,60 +68,55 @@ public class MainActivity extends ActionBarActivity implements GoalsListFragment
     }
 
     @Override
-    public void onGoalSelected(String goalId) {
-        GoalDetailsFragment detailsFrag = (GoalDetailsFragment)
+    public void onGoalSelected(GoalItem item) {
+        mSelectedItem = item;
+
+        DetailsFragment detailsFrag = (DetailsFragment)
                 getSupportFragmentManager().findFragmentById(R.id.details_fragment);
 
         if (detailsFrag != null) {
-            detailsFrag.updateDetailsView(goalId);
+            detailsFrag.updateDetailsView(item.getGoalId());
         } else {
 
-            GoalDetailsFragment fragment = new GoalDetailsFragment();
+            DetailsFragment fragment = new DetailsFragment();
             Bundle args = new Bundle();
-            args.putString(GoalDetailsFragment.ARG_ID, goalId);
+            args.putInt(DetailsFragment.ARG_ID, item.getGoalId());
             fragment.setArguments(args);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-            transaction.replace(R.id.container, fragment);
+            transaction.replace(R.id.container, fragment, DETAILS_FRAGMENT_TAG);
             transaction.addToBackStack(null);
             transaction.commit();
         }
     }
 
     @Override
+    public GoalItem onRequiresSelectedGoalItem() {
+        return mSelectedItem;
+    }
+
+    @Override
     public void onDownloadFinished(String jsonStr) {
-        DebugUtils.debugLog(jsonStr);
-
-        Toast.makeText(getApplicationContext(), "Connection Compleded", Toast.LENGTH_SHORT).show();
         mLoadGoalsTask.execute(jsonStr);
-
     }
 
     @Override
     public void onDownloadCanceled() {
+        Toast.makeText(getApplicationContext(), "Connection canceled", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDownloadFailed() {
         Toast.makeText(getApplicationContext(), "Connection Failed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onLoadFinished(int itemsLoaded) {
-        DebugUtils.debugLog("Load Finished");
-        DebugUtils.debugLog(mData.get(itemsLoaded - 1).getTitle());
-    }
-
-    private void doCreateNewGoal() {
-        CreateNewGoalFragment createFrag = (CreateNewGoalFragment)
-                getSupportFragmentManager().findFragmentById(R.id.create_new_goal);
-
-        if (createFrag == null) {
-            //Do nothing.
-            CreateNewGoalFragment fragment = new CreateNewGoalFragment();
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-            transaction.replace(R.id.container, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-        }
+        GoalsListFragment frag = (GoalsListFragment) getSupportFragmentManager().findFragmentByTag(LIST_FRAGMENT_TAG);
+        GoalsListAdapter adapter = frag.getAdapter();
+        GoalItem[] items = mData.toArray(new GoalItem[mData.size()]);
+        adapter.setData(items);
+        adapter.notifyDataSetChanged();
     }
 }

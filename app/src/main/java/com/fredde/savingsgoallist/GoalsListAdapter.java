@@ -11,6 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fredde.savingsgoallist.data.GoalItem;
+import com.fredde.savingsgoallist.utils.StringUtils;
+import com.squareup.picasso.Picasso;
 
 /**
  * Adapter feeding data to the Goals List View.
@@ -18,18 +20,9 @@ import com.fredde.savingsgoallist.data.GoalItem;
 public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
 
     /**
-     * Space.
-     */
-    static final String SPACE = " ";
-
-    /**
-     * String in between current savings and target.
-     */
-    private final String mProgressText;
-    /**
      * Used to inflate the list items.
      */
-    private final LayoutInflater mInflater;
+    private final Context mContext;
 
     /**
      * Data
@@ -48,19 +41,9 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
         int position;
     }
 
-    public GoalsListAdapter(Context context, LayoutInflater inflater) {
-        mInflater = inflater;
-        mProgressText = context.getResources().getString(R.string.text_saved_of);
-
-
-        mItems = new GoalItem[4];
-
-        /* Mock Data */
-        mItems[0] = new GoalItem().setTitle("Roskilde Festival").setSavingsTarget(2000).setCurrentBalance(1500);
-        mItems[1] = new GoalItem().setTitle("Roadburn Festival").setSavingsTarget(1600).setCurrentBalance(1600);
-        mItems[2] = new GoalItem().setTitle("Hellacopters Vinyl").setSavingsTarget(5000).setCurrentBalance(1500);
-        mItems[3] = new GoalItem().setTitle("Xbox One").setSavingsTarget(2500).setCurrentBalance(0);
-        mItems[3] = new GoalItem().setTitle("PS4").setSavingsTarget(0).setCurrentBalance(1500);
+    public GoalsListAdapter(Context context) {
+        mContext = context;
+        mItems = new GoalItem[0];
     }
 
     @Override
@@ -86,7 +69,7 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
 
         if (view == null) {
             holder = new ViewHolder();
-            view = mInflater.inflate(R.layout.goal_list_item, parent, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.goals_list_item, parent, false);
             holder.title = (TextView) view.findViewById(R.id.list_item_title);
             holder.subTitle = (TextView) view.findViewById(R.id.list_item_subtitle);
             holder.imageView = (ImageView) view.findViewById(R.id.list_item_image);
@@ -99,6 +82,15 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
     }
 
     /**
+     * Sets new data.
+     *
+     * @param items The data to set.
+     */
+    public void setData(GoalItem[] items) {
+        mItems = items.clone();
+    }
+
+    /**
      * Sets data from GoalItem to HolderView.
      *
      * @param holder The holder to set data to.
@@ -106,8 +98,9 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
      */
     private void setDataToHolder(ViewHolder holder, GoalItem item) {
         holder.title.setText(item.getTitle());
-        holder.subTitle.setText(item.getCurrentBalance() + SPACE + mProgressText + SPACE + item.getSavingsTarget());
+        holder.subTitle.setText(StringUtils.buildProgressString(mContext, item));
         holder.progress.setProgress(calculateProgress(holder, item));
+        Picasso.with(mContext).load(item.getImageUrl()).placeholder(R.drawable.list_placeholder).into(holder.imageView);
     }
 
     /**

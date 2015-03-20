@@ -26,7 +26,11 @@ public class DownloadJSonTask extends AsyncTask<String, Void, String> {
      */
     DownloadListener mListener;
 
-
+    /**
+     * Constructor.
+     *
+     * @param listener DownloadListener.
+     */
     public DownloadJSonTask(DownloadListener listener) {
         mListener = listener;
     }
@@ -39,7 +43,7 @@ public class DownloadJSonTask extends AsyncTask<String, Void, String> {
         try {
             return downloadUrl(urls[0]);
         } catch (IOException e) {
-            DebugUtils.debugLog("Unable to retrieve data from " + urls[0]);
+            DebugUtils.log("Unable to retrieve data from " + urls[0]);
         }
         return null;
     }
@@ -51,9 +55,21 @@ public class DownloadJSonTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        mListener.onDownloadFinished(result);
+        if (result != null) {
+            mListener.onDownloadFinished(result);
+        } else {
+            mListener.onDownloadFailed();
+        }
     }
 
+
+    /**
+     * Sets up an HTTPURLConnection and gets an input stream from the provided URL.
+     *
+     * @param urlString The url to download from.
+     * @return String containing the content of the URL.
+     * @throws IOException
+     */
     private String downloadUrl(String urlString) throws IOException {
         InputStream is = null;
         try {
@@ -63,7 +79,7 @@ public class DownloadJSonTask extends AsyncTask<String, Void, String> {
             conn.setConnectTimeout(TIMEOUT);
             conn.setRequestMethod("GET");
             conn.setDoInput(true);
-            // Starts the query
+
             conn.connect();
             is = conn.getInputStream();
 
@@ -75,7 +91,13 @@ public class DownloadJSonTask extends AsyncTask<String, Void, String> {
         }
     }
 
-
+    /**
+     * Reads an InputStream to a String.
+     *
+     * @param stream The stream to read.
+     * @return String containing data from stream.
+     * @throws IOException
+     */
     private String readToString(InputStream stream) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
         StringBuilder builder = new StringBuilder();

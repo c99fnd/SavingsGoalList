@@ -20,12 +20,12 @@ public class GoalItem {
     /**
      * The savings target for this goal.
      */
-    private float mSavingsTarget;
+    private double mSavingsTarget;
 
     /**
      * The current balance of this goal
      */
-    private float mCurrentBalance;
+    private double mCurrentBalance;
 
     /**
      * The Uri of the image for this goal.
@@ -50,7 +50,7 @@ public class GoalItem {
     /**
      * Gets goal title.
      *
-     * @return Sting The tile of the goal.
+     * @return The tile of the goal.
      */
     public String getTitle() {
         return mTitle;
@@ -70,9 +70,9 @@ public class GoalItem {
     /**
      * Gets the saving target
      *
-     * @return float The Saving Target.
+     * @return The savings target.
      */
-    public float getSavingsTarget() {
+    public double getSavingsTarget() {
         return mSavingsTarget;
     }
 
@@ -82,7 +82,7 @@ public class GoalItem {
      * @param target The target to set.
      * @return this.
      */
-    public GoalItem setSavingsTarget(float target) {
+    public GoalItem setSavingsTarget(double target) {
         mSavingsTarget = target;
         return this;
     }
@@ -90,54 +90,54 @@ public class GoalItem {
     /**
      * Gets the current balance.
      *
-     * @return float The current balance.
+     * @return The current balance.
      */
-    public float getCurrentBalance() {
+    public double getCurrentBalance() {
         return mCurrentBalance;
     }
 
     /**
      * Sets the current balance.
      *
-     * @param balance current balance.
+     * @param balance The current balance.
      * @return this.
      */
-    public GoalItem setCurrentBalance(float balance) {
+    public GoalItem setCurrentBalance(double balance) {
         mCurrentBalance = balance;
         return this;
     }
 
     /**
-     * Gets the image uri.
+     * Gets image URL.
      *
-     * @return String image uri
+     * @return The image URL
      */
-    public String getImageUri() {
+    public String getImageUrl() {
         return mImageUri;
     }
 
     /**
-     * Set Image Uri
+     * Sets image URL
      *
      * @param uri The uri to set.
      * @return this.
      */
-    public GoalItem setImageUri(String uri) {
+    public GoalItem setImageUrl(String uri) {
         mImageUri = uri;
         return this;
     }
 
     /**
-     * Get Goal Id.
+     * Gets the goal Id.
      *
-     * @return int Id.
+     * @return The id.
      */
     public int getGoalId() {
         return mId;
     }
 
     /**
-     * Sets goal id.
+     * Set goal id.
      *
      * @param id The id to set.
      * @return this
@@ -148,21 +148,21 @@ public class GoalItem {
     }
 
     /**
-     * Get the id of the creator of the goal.
+     * Gets the id of the creator of the goal.
      *
      * @return this.
      */
-    public int getmUserId() {
+    public int getUserId() {
         return mUserId;
     }
 
     /**
-     * Set user id.
+     * Sets user id.
      *
-     * @param userId id of the user that created the goal
+     * @param userId id of the user that created the goal.
      * @return this.
      */
-    public GoalItem setmUserId(int userId) {
+    public GoalItem setUserId(int userId) {
         mUserId = userId;
         return this;
     }
@@ -201,7 +201,7 @@ public class GoalItem {
      *
      * @param users list of users
      */
-    public GoalItem setmConnectedUserIds(List<Integer> users) {
+    public GoalItem setConnectedUserIds(List<Integer> users) {
         mConnectedUserIds = users;
         return this;
     }

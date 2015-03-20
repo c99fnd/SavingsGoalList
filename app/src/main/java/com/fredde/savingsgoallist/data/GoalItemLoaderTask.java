@@ -2,8 +2,6 @@ package com.fredde.savingsgoallist.data;
 
 import android.os.AsyncTask;
 
-import com.fredde.savingsgoallist.utils.DebugUtils;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,7 +51,6 @@ public class GoalItemLoaderTask extends AsyncTask<String, Void, Integer> {
 
                 /* Get JSON Array */
                 JSONArray goals = jsonObj.getJSONArray(GOALS);
-                DebugUtils.debugLog("ArraySize " + goals.length());
 
                 /* Loop through goals. */
                 for (int i = 0; i < goals.length(); i++) {
@@ -61,11 +58,11 @@ public class GoalItemLoaderTask extends AsyncTask<String, Void, Integer> {
 
                     GoalItem item = new GoalItem()
                             .setGoalId(g.getInt(GOAL_ID))
-                            .setCurrentBalance(g.optInt(GOAL_CURRENT_BALANCE))
-                            .setSavingsTarget(g.optInt(GOAL_TARGET))
+                            .setCurrentBalance(g.optDouble(GOAL_CURRENT_BALANCE, 0))
+                            .setSavingsTarget(g.optDouble(GOAL_TARGET, 0))
                             .setTitle(g.getString(GOAL_NAME))
-                            .setImageUri(g.getString(GOAL_IMAGE_URL))
-                            .setmUserId(g.getInt(GOAL_USER_ID))
+                            .setImageUrl(g.getString(GOAL_IMAGE_URL))
+                            .setUserId(g.getInt(GOAL_USER_ID))
                             .setStatus(g.getString(GOAL_STATUS));
                     // Integer[] users = g.getJSONArray()
 
