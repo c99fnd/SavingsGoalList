@@ -3,7 +3,6 @@ package com.fredde.savingsgoallist;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.fredde.savingsgoallist.data.GoalItem;
@@ -47,19 +46,10 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.options_menu, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 getSupportFragmentManager().popBackStack();
-                return true;
-            case R.id.action_add_goal:
-                /* Not implemented. */
                 return true;
             default:
                 return false;

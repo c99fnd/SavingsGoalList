@@ -5,10 +5,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.fredde.savingsgoallist.GoalsListAdapter;
 import com.fredde.savingsgoallist.GoalsListCallback;
@@ -41,6 +45,7 @@ public class GoalsListFragment extends Fragment implements AdapterView.OnItemCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(true);
         mAdapter = new GoalsListAdapter(getActivity().getApplicationContext());
         new GoalItemLoaderTask(this).execute(SAVINGS);
     }
@@ -69,6 +74,21 @@ public class GoalsListFragment extends Fragment implements AdapterView.OnItemCli
             throw new ClassCastException(activity.toString()
                     + " must implement GoalsListCallback");
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.options_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_goal:
+                Toast.makeText(getActivity().getBaseContext(), "Add new goal not implemented yet.", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

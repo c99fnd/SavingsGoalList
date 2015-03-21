@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fredde.savingsgoallist.FeedListAdapter;
 import com.fredde.savingsgoallist.GoalsListCallback;
@@ -34,6 +38,7 @@ public class DetailsFragment extends Fragment implements FeedItemLoaderTask.Load
     private final String BASR_URL = "http://qapital-ios-testtask.herokuapp.com/savingsgoals/";
     private final String FEED = "/feed";
 
+
     public static final String ARG_ITEM = "goal_item";
 
     public GoalItem mItem;
@@ -46,6 +51,7 @@ public class DetailsFragment extends Fragment implements FeedItemLoaderTask.Load
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(true);
         mItem = (GoalItem) getArguments().getSerializable(ARG_ITEM);
         mAdapter = new FeedListAdapter(getActivity().getApplicationContext());
         new FeedItemLoaderTask(this).execute(BASR_URL + mItem.getId() + FEED);
@@ -92,6 +98,21 @@ public class DetailsFragment extends Fragment implements FeedItemLoaderTask.Load
 
         ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.options_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_goal:
+                Toast.makeText(getActivity().getBaseContext(), "Add cash not implemented yet.", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
