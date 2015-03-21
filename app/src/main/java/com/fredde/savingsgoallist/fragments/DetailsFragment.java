@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +28,9 @@ import java.util.List;
  */
 public class DetailsFragment extends Fragment implements FeedItemLoaderTask.LoadListener {
 
+    /**
+     * URLs
+     */
     private final String BASR_URL = "http://qapital-ios-testtask.herokuapp.com/savingsgoals/";
     private final String FEED = "/feed";
 
@@ -44,10 +46,8 @@ public class DetailsFragment extends Fragment implements FeedItemLoaderTask.Load
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mItem = (GoalItem) getArguments().getSerializable(ARG_ITEM);
         mAdapter = new FeedListAdapter(getActivity().getApplicationContext());
-
         new FeedItemLoaderTask(this).execute(BASR_URL + mItem.getId() + FEED);
     }
 
@@ -65,7 +65,6 @@ public class DetailsFragment extends Fragment implements FeedItemLoaderTask.Load
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mItem = (GoalItem) getArguments().getSerializable(ARG_ITEM);
-
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/BentonSans-Light.otf");
 
         /* Inflate the main view incl. feed list*/
@@ -91,12 +90,8 @@ public class DetailsFragment extends Fragment implements FeedItemLoaderTask.Load
         list.addHeaderView(header);
         list.setAdapter(mAdapter);
 
-
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         return rootView;
-    }
-
-    public void updateDetailsView(int goalId) {
-        Log.d("Album", "updateDetailsView GoalId " + goalId);
     }
 
     @Override

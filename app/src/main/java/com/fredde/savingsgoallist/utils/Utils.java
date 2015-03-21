@@ -13,42 +13,47 @@ import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 
 /**
- * Contains helper functions for managing texts.
+ * Util class containing various static helper functions.
  */
 public class Utils {
 
     /**
-     * Builds a string with the format $<value> saved of $<value> for use in the details view header.
+     * Builds a string with the format $<current> saved of $<target>.
      *
-     * @param context
-     * @param current
-     * @param target
-     * @return
+     * @param context The context.
+     * @param current First value.
+     * @param target  Second value.
+     * @return The requested string.
      */
     public static String buildListProgressString(Context context, double current, double target) {
-        DecimalFormat df = new DecimalFormat("###");
+        DecimalFormat df = new DecimalFormat("#");
         return "$" + df.format(current) + context.getResources().
                 getString(R.string.text_saved_of) + "$" + df.format(target);
     }
 
     /**
-     * Builds a string with the format $<value> of $<value> for use in the details view header.
+     * Builds a string with the format $<current> of $<target>.
      *
-     * @param context
-     * @param current
-     * @param target
-     * @return
+     * @param context The context.
+     * @param current First value.
+     * @param target  Second value.
+     * @return The requested string.
      */
     public static String buildHeaderProgressString(Context context, double current, double target) {
-        DecimalFormat df = new DecimalFormat("###");
+        DecimalFormat df = new DecimalFormat("#");
         return "$" + df.format(current) + context.getResources().
                 getString(R.string.text_of) + "$" + df.format(target);
     }
 
-
-    public static String buildAmountString(double amount) {
-        DecimalFormat df = new DecimalFormat("###.##");
-        return "$" + df.format(amount);
+    /**
+     * Builds a string with the format $<value>.
+     *
+     * @param value The value to create string from
+     * @return The requested string
+     */
+    public static String buildAmountString(double value) {
+        DecimalFormat df = new DecimalFormat("#.##");
+        return "$" + df.format(value);
     }
 
     /**

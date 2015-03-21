@@ -3,6 +3,7 @@ package com.fredde.savingsgoallist.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,8 @@ public class GoalsListFragment extends Fragment implements AdapterView.OnItemCli
         ListView list = (ListView) rootView.findViewById(R.id.goals_list_view);
         list.setOnItemClickListener(this);
         list.setAdapter(mAdapter);
+
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         return rootView;
     }
 

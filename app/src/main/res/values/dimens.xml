@@ -4,5 +4,7 @@
 
     <dimen name="goal_list_progress_bar_margin">40dp</dimen>
     <dimen name="details_view_header_height">180dp</dimen>
-    <dimen name="feed_list_item_height">100dp</dimen>
+    <dimen name="feed_list_item_height">80dp</dimen>
+    <dimen name="feed_list_padding">10dp</dimen>
+    <dimen name="feed_list_badge_margin">10dp</dimen>
 </resources>

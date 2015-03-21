@@ -27,11 +27,16 @@
 
     <style name="TextStyle.List.FeedText" parent="Base.TextAppearance.AppCompat.Headline">
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">12dp</item>
+        <item name="android:textSize">14dp</item>
     </style>
 
     <style name="TextStyle.List.AmountText" parent="Base.TextAppearance.AppCompat.Headline">
-        <item name="android:textColor">@android:color/holo_green_light</item>
-        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/green</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="TextStyle.List.TimeText" parent="Base.TextAppearance.AppCompat.Headline">
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textSize">10dp</item>
     </style>
 </resources>

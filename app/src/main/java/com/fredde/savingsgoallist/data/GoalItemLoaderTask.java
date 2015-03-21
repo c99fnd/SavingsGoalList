@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Creates goal items from JSON string.
+ * Responsible for fetching a JSON object representing saving goals and converting them into
+ * {@link GoalItem}s
  */
 public class GoalItemLoaderTask extends AsyncTask<String, Void, Integer> {
 
@@ -29,15 +30,34 @@ public class GoalItemLoaderTask extends AsyncTask<String, Void, Integer> {
     private static final String GOAL_NAME = "name";
     private static final String GOAL_CONNECTED_USERS_LIST = "connectedUsers";
 
+    /**
+     * List where the items will be stored.
+     */
     private final List<GoalItem> mList = new ArrayList<>();
 
+    /**
+     * Listener to call when loading is done.
+     */
     private final LoadListener mListener;
 
 
+    /**
+     * Listener inteface.
+     */
     public interface LoadListener {
+        /**
+         * Called when saving goal items are loaded into the data list.
+         *
+         * @param data The loaded data.
+         */
         void onLoadFinished(List<GoalItem> data);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param listener Listener to notify when loading is done.
+     */
     public GoalItemLoaderTask(LoadListener listener) {
         mListener = listener;
     }

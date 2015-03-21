@@ -12,9 +12,13 @@ import android.widget.TextView;
 
 import com.fredde.savingsgoallist.data.FeedItem;
 import com.fredde.savingsgoallist.utils.Utils;
+import com.squareup.picasso.Picasso;
 
 public class FeedListAdapter extends BaseAdapter implements ListAdapter {
 
+    /**
+     * Context
+     */
     private final Context mContext;
 
     /**
@@ -27,8 +31,10 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
      */
     static class ViewHolder {
         TextView message;
-        TextView ammount;
+        TextView amount;
+        TextView timestamp;
         ImageView avatarImage;
+        ImageView badgeImage;
 
     }
 
@@ -65,8 +71,10 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
             holder = new ViewHolder();
             view = LayoutInflater.from(mContext).inflate(R.layout.details_feed_list_item, parent, false);
             holder.message = (TextView) view.findViewById(R.id.feed_item_message);
-            holder.ammount = (TextView) view.findViewById(R.id.feed_item_ammount);
-            holder.avatarImage = (ImageView) view.findViewById(R.id.feed_item_avatar_image);
+            holder.amount = (TextView) view.findViewById(R.id.feed_item_ammount);
+            holder.timestamp = (TextView) view.findViewById(R.id.feed_item_time);
+            holder.avatarImage = (ImageView) view.findViewById(R.id.feed_item_avatar);
+            holder.badgeImage = (ImageView) view.findViewById(R.id.feed_item_badge);
             view.setTag(holder);
         }
         holder = (ViewHolder) view.getTag();
@@ -85,7 +93,20 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
 
     private void setDataToHolder(ViewHolder holder, FeedItem item) {
         holder.message.setText(Html.fromHtml(item.getMessage()));
-        holder.ammount.setText(Utils.buildAmountString(item.getAmount()));
-        // Picasso.with(mContext).load(item.getUserId()).placeholder(R.drawable.list_placeholder).into(holder.avatarImage);
+        holder.amount.setText(Utils.buildAmountString(item.getAmount()));
+        holder.timestamp.setText(item.getTimeStamp());
+        holder.badgeImage.setImageResource(getBadgeResId(item.getType()));
+        Picasso.with(mContext).load("http://qapital-ios-testtask.herokuapp.com/avatars/johan.jpg")
+                .placeholder(R.drawable.list_placeholder).into(holder.avatarImage);
+    }
+
+    private int getBadgeResId(String type) {
+        switch (type) {
+            case "guilty":
+                return R.drawable.rule_penalty;
+            default:
+                return R.drawable.rule_roundup;
+        }
+
     }
 }

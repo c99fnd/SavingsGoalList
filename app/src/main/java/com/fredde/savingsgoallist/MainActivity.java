@@ -7,26 +7,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.fredde.savingsgoallist.data.GoalItem;
-import com.fredde.savingsgoallist.data.GoalItemLoaderTask;
 import com.fredde.savingsgoallist.fragments.DetailsFragment;
 import com.fredde.savingsgoallist.fragments.GoalsListFragment;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity implements GoalsListCallback {
 
     private static final String LIST_TAG = "listFragment";
     private static final String DETAILS_TAG = "detailsFragment";
-
-    private final String BASE_URL = "http://qapital-ios-testtask.herokuapp.com/";
-    private final String SAVINGS = BASE_URL + "savingsgoals";
-    private final String RULES = BASE_URL + "savingsrules";
-
-    List<GoalItem> mData = new ArrayList<>();
-    GoalItemLoaderTask mLoadGoalsTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +32,8 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
                     public void onBackStackChanged() {
                         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                        } else {
+                            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                         }
                     }
                 });
@@ -53,11 +44,6 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
 
 
         Picasso.with(getApplicationContext()).setLoggingEnabled(true);
-
-        //mLoadGoalsTask = new GoalItemLoaderTask(mData, this);
-        //DownloadJSonTask task = new DownloadJSonTask(this);
-        //task.execute(SAVINGS);
-
     }
 
     @Override

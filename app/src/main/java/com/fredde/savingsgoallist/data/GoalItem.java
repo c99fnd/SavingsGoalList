@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Data representation of a Savings goal.
+ * Data representation of a Savings Goal.
  */
 public class GoalItem implements Serializable {
 
@@ -34,7 +34,7 @@ public class GoalItem implements Serializable {
     private String mImageUri;
 
     /**
-     * The status of this goal
+     * The status of this goal.
      */
     private String mStatus;
 
@@ -44,7 +44,7 @@ public class GoalItem implements Serializable {
     private List<Integer> mConnectedUserIds;
 
     /**
-     * Title of this goal
+     * Title of this goal.
      */
     private String mTitle;
 

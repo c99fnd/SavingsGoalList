@@ -12,6 +12,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Responsible for fetching a JSON object representing feed item and converting them into
+ * {@link FeedItem}s
+ */
 public class FeedItemLoaderTask extends AsyncTask<String, Void, Integer> {
 
     // JSON Node names
@@ -23,20 +27,34 @@ public class FeedItemLoaderTask extends AsyncTask<String, Void, Integer> {
     private static final String AMOUNT = "amount";
     private static final String USER_ID = "userId";
 
-
-    private static final String GOAL_STATUS = "status";
-    private static final String GOAL_NAME = "name";
-    private static final String GOAL_CONNECTED_USERS_LIST = "connectedUsers";
-
+    /**
+     * List where the items will be stored.
+     */
     private final List<FeedItem> mList = new ArrayList<>();
 
+    /**
+     * Listener to call when loading is done.
+     */
     private final LoadListener mListener;
 
 
+    /**
+     * Listener interface.
+     */
     public interface LoadListener {
+        /**
+         * Called when feed items are loaded into the data list.
+         *
+         * @param data The loaded data.
+         */
         void onLoadFinished(List<FeedItem> data);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param listener Listener to notify when loading is done.
+     */
     public FeedItemLoaderTask(LoadListener listener) {
         mListener = listener;
     }
@@ -71,7 +89,7 @@ public class FeedItemLoaderTask extends AsyncTask<String, Void, Integer> {
                             .setType(g.getString(TYPE))
                             .setTimeStamp(g.getString(TIMESTAMP))
                             .setMessage(g.getString(MESSAGE))
-                            .setAmount(g.optDouble(USER_ID, 0))
+                            .setAmount(g.optDouble(AMOUNT, 0))
                             .setUserId(g.getInt(USER_ID));
                     mList.add(item);
                 }
