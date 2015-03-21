@@ -1,6 +1,7 @@
 package com.fredde.savingsgoallist;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fredde.savingsgoallist.data.GoalItem;
-import com.fredde.savingsgoallist.utils.StringUtils;
+import com.fredde.savingsgoallist.utils.TextUtils;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -23,6 +24,16 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
      * Used to inflate the list items.
      */
     private final Context mContext;
+
+    /**
+     * Custom fonts.
+     */
+    private final Typeface mTypefaceLight;
+
+    /**
+     * Custom fonts.
+     */
+    private final Typeface mTypefaceNorm;
 
     /**
      * Data
@@ -44,6 +55,8 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
     public GoalsListAdapter(Context context) {
         mContext = context;
         mItems = new GoalItem[0];
+        mTypefaceLight = Typeface.createFromAsset(mContext.getAssets(), "fonts/BentonSans-Light.otf");
+        mTypefaceNorm = Typeface.createFromAsset(mContext.getAssets(), "fonts/BentonSans-Light.otf");
     }
 
     @Override
@@ -52,7 +65,7 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public GoalItem getItem(int position) {
         return mItems[position];
     }
 
@@ -63,15 +76,20 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final GoalItem item = mItems[position];
+        final GoalItem item = getItem(position);
         ViewHolder holder;
         View view = convertView;
 
         if (view == null) {
             holder = new ViewHolder();
             view = LayoutInflater.from(mContext).inflate(R.layout.goals_list_item, parent, false);
+
             holder.title = (TextView) view.findViewById(R.id.list_item_title);
+            TextUtils.setLayoutFont(mTypefaceNorm, holder.title);
+
             holder.subTitle = (TextView) view.findViewById(R.id.list_item_subtitle);
+            TextUtils.setLayoutFont(mTypefaceLight, holder.subTitle);
+
             holder.imageView = (ImageView) view.findViewById(R.id.list_item_image);
             holder.progress = (ProgressBar) view.findViewById(R.id.list_item_progress);
             view.setTag(holder);
@@ -98,7 +116,7 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
      */
     private void setDataToHolder(ViewHolder holder, GoalItem item) {
         holder.title.setText(item.getTitle());
-        holder.subTitle.setText(StringUtils.buildProgressString(mContext, item));
+        holder.subTitle.setText(TextUtils.buildListProgressString(mContext, item));
         holder.progress.setProgress(calculateProgress(holder, item));
         Picasso.with(mContext).load(item.getImageUrl()).placeholder(R.drawable.list_placeholder).into(holder.imageView);
     }

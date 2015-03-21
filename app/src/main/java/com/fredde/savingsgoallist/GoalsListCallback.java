@@ -12,11 +12,4 @@ public interface GoalsListCallback {
      * @param item The goal item.
      */
     public void onGoalSelected(GoalItem item);
-
-    /**
-     * Called when a fraglemt (e.g. detailsfragment) needs a Goal Item.
-     *
-     * @return Goal Item.
-     */
-    public GoalItem onRequiresSelectedGoalItem();
 }

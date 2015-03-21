@@ -2,4 +2,5 @@
     <string name="app_name">Savings</string>
     <string name="menu_option_add_goal">Add New Goal</string>
     <string name="text_saved_of">\u0020saved of\u0020</string>
+    <string name="text_of">\u0020of\u0020</string>
 </resources>

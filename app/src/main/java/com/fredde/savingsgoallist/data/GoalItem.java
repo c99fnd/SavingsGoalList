@@ -1,11 +1,12 @@
 package com.fredde.savingsgoallist.data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Data representation of a Savings goal.
  */
-public class GoalItem {
+public class GoalItem implements Serializable {
 
     /**
      * Goal id.

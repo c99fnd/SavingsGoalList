@@ -20,16 +20,19 @@
 
         <TextView
             android:id="@+id/details_header_title"
-            style="@style/TextStyle.Title"
+            style="@style/TextStyle.List.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:gravity="center" />
 
         <TextView
             android:id="@+id/details_header_subtitle"
-            style="@style/TextStyle.Subtitle"
+            style="@style/TextStyle.Header.Subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"
             android:gravity="center" />
     </LinearLayout>
 

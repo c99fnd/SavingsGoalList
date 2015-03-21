@@ -1,8 +1,10 @@
 package com.fredde.savingsgoallist.ui.fragments;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +17,7 @@ import com.fredde.savingsgoallist.FeedListAdapter;
 import com.fredde.savingsgoallist.GoalsListCallback;
 import com.fredde.savingsgoallist.R;
 import com.fredde.savingsgoallist.data.GoalItem;
-import com.fredde.savingsgoallist.utils.StringUtils;
+import com.fredde.savingsgoallist.utils.TextUtils;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -23,7 +25,7 @@ import com.squareup.picasso.Picasso;
  */
 public class DetailsFragment extends Fragment {
 
-    public static final String ARG_ID = "GoalId";
+    public static final String ARG_ITEM = "goal_item";
 
     public GoalItem mItem;
 
@@ -36,6 +38,7 @@ public class DetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mAdapter = new FeedListAdapter(getActivity().getApplicationContext());
     }
 
@@ -52,8 +55,9 @@ public class DetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        int goalId = getArguments().getInt(ARG_ID);
-        mItem = mCallback.onRequiresSelectedGoalItem();
+        mItem = (GoalItem) getArguments().getSerializable(ARG_ITEM);
+
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/BentonSans-Light.otf");
 
         /* Inflate the main view incl. feed list*/
         View rootView = inflater.inflate(R.layout.details_fragment, container, false);
@@ -61,15 +65,24 @@ public class DetailsFragment extends Fragment {
 
         /* Inflate and set up header view */
         View header = inflater.inflate(R.layout.details_header, list, false);
+
         ImageView headerImage = (ImageView) header.findViewById(R.id.details_header_img);
+        Picasso.with(getActivity().getApplicationContext()).load(mItem.getImageUrl())
+                .placeholder(R.drawable.list_placeholder).into(headerImage);
+
         TextView nameText = (TextView) header.findViewById(R.id.details_header_title);
-        TextView moneyText = (TextView) header.findViewById(R.id.details_header_subtitle);
         nameText.setText(mItem.getTitle());
-        moneyText.setText(StringUtils.buildProgressString(getActivity().getBaseContext(), mItem));
+
+
+        TextView moneyText = (TextView) header.findViewById(R.id.details_header_subtitle);
+        moneyText.setText(TextUtils.buildHeaderProgressString(getActivity().getBaseContext(), mItem));
+
+        TextUtils.setLayoutFont(tf, nameText, moneyText);
+
         list.addHeaderView(header);
         list.setAdapter(mAdapter);
 
-        Picasso.with(getActivity().getApplicationContext()).load(mItem.getImageUrl()).placeholder(R.drawable.list_placeholder).into(headerImage);
+
         return rootView;
     }
 

@@ -1,16 +1,27 @@
 <resources>
 
-
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@android:color/white</item>
         <item name="colorPrimaryDark">@android:color/darker_gray</item>
     </style>
 
-    <style name="TextStyle.Title" parent="Base.TextAppearance.AppCompat.Headline">
+    <style name="TextStyle.List.Title" parent="Base.TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">32dp</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="TextStyle.Subtitle" parent="Base.TextAppearance.AppCompat.Body1">
+    <style name="TextStyle.List.Subtitle" parent="Base.TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">18dp</item>
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TextStyle.Header.Title" parent="Base.TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">30dp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TextStyle.Header.Subtitle" parent="Base.TextAppearance.AppCompat.Headline">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14dp</item>
     </style>
 </resources>

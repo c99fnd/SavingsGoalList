@@ -1,7 +1,7 @@
 package com.fredde.savingsgoallist;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +13,7 @@ import com.fredde.savingsgoallist.http.DownloadJSonTask;
 import com.fredde.savingsgoallist.http.DownloadListener;
 import com.fredde.savingsgoallist.ui.fragments.DetailsFragment;
 import com.fredde.savingsgoallist.ui.fragments.GoalsListFragment;
+import com.fredde.savingsgoallist.utils.DebugUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -21,8 +22,8 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity implements GoalsListCallback, DownloadListener, GoalItemLoaderTask.LoadListener {
 
-    private static final String LIST_FRAGMENT_TAG = "listfragment";
-    private static final String DETAILS_FRAGMENT_TAG = "detailsfragment";
+    private static final String LIST_TAG = "listFragment";
+    private static final String DETAILS_TAG = "detailsFragment";
 
     private final String BASE_URL = "http://qapital-ios-testtask.herokuapp.com/";
     private final String SAVINGS = BASE_URL + "savingsgoals";
@@ -30,18 +31,28 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
 
     List<GoalItem> mData = new ArrayList<>();
     GoalItemLoaderTask mLoadGoalsTask;
-    private GoalItem mSelectedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new GoalsListFragment(), LIST_FRAGMENT_TAG)
-                    .commit();
+        if (savedInstanceState != null) {
+            return;
         }
-        Picasso.with(getApplicationContext()).setIndicatorsEnabled(true);
+        getSupportFragmentManager().addOnBackStackChangedListener(
+                new FragmentManager.OnBackStackChangedListener() {
+                    public void onBackStackChanged() {
+                        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                        }
+                    }
+                });
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, new GoalsListFragment(), LIST_TAG)
+                .commit();
+
+
         Picasso.with(getApplicationContext()).setLoggingEnabled(true);
 
         mLoadGoalsTask = new GoalItemLoaderTask(mData, this);
@@ -58,7 +69,11 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        DebugUtils.log("onOptionsItemSelected");
         switch (item.getItemId()) {
+            case android.R.id.home:
+                getSupportFragmentManager().popBackStack();
+                return true;
             case R.id.action_add_goal:
                 /* Not implemented. */
                 return true;
@@ -69,31 +84,16 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
 
     @Override
     public void onGoalSelected(GoalItem item) {
-        mSelectedItem = item;
-
         DetailsFragment detailsFrag = (DetailsFragment)
                 getSupportFragmentManager().findFragmentById(R.id.details_fragment);
 
+        Bundle args = new Bundle();
+        args.putSerializable(DetailsFragment.ARG_ITEM, item);
         if (detailsFrag != null) {
-            detailsFrag.updateDetailsView(item.getGoalId());
+            detailsFrag.setArguments(args);
         } else {
-
-            DetailsFragment fragment = new DetailsFragment();
-            Bundle args = new Bundle();
-            args.putInt(DetailsFragment.ARG_ID, item.getGoalId());
-            fragment.setArguments(args);
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-            transaction.replace(R.id.container, fragment, DETAILS_FRAGMENT_TAG);
-            transaction.addToBackStack(null);
-            transaction.commit();
+            createAndAddDetailsFragment(args);
         }
-    }
-
-    @Override
-    public GoalItem onRequiresSelectedGoalItem() {
-        return mSelectedItem;
     }
 
     @Override
@@ -113,10 +113,25 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
 
     @Override
     public void onLoadFinished(int itemsLoaded) {
-        GoalsListFragment frag = (GoalsListFragment) getSupportFragmentManager().findFragmentByTag(LIST_FRAGMENT_TAG);
+        GoalsListFragment frag = (GoalsListFragment) getSupportFragmentManager().findFragmentByTag(LIST_TAG);
         GoalsListAdapter adapter = frag.getAdapter();
         GoalItem[] items = mData.toArray(new GoalItem[mData.size()]);
         adapter.setData(items);
         adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Creates the DetailsFragment and adds it using a custom animation.
+     *
+     * @param args Bundle containing the Serializable {@link GoalItem} to display details from.
+     */
+    private void createAndAddDetailsFragment(Bundle args) {
+        DetailsFragment frag = new DetailsFragment();
+
+        frag.setArguments(args);
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_right, R.anim.stay, 0, R.anim.slide_out_right)
+                .replace(R.id.container, frag, DETAILS_TAG)
+                .addToBackStack(null).commit();
     }
 }
