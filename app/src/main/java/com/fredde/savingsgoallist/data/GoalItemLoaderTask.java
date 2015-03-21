@@ -2,10 +2,14 @@ package com.fredde.savingsgoallist.data;
 
 import android.os.AsyncTask;
 
+import com.fredde.savingsgoallist.http.JSonFetcher;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,29 +29,36 @@ public class GoalItemLoaderTask extends AsyncTask<String, Void, Integer> {
     private static final String GOAL_NAME = "name";
     private static final String GOAL_CONNECTED_USERS_LIST = "connectedUsers";
 
-    private final List<GoalItem> mList;
+    private final List<GoalItem> mList = new ArrayList<>();
 
     private final LoadListener mListener;
 
 
     public interface LoadListener {
-        void onLoadFinished(int itemsLoaded);
+        void onLoadFinished(List<GoalItem> data);
     }
 
-    public GoalItemLoaderTask(List<GoalItem> list, LoadListener listener) {
+    public GoalItemLoaderTask(LoadListener listener) {
         mListener = listener;
-        mList = list;
     }
 
     @Override
-    protected Integer doInBackground(String... jsonStrs) {
+    protected Integer doInBackground(String... url) {
         if (isCancelled()) {
             return 0;
         }
 
-        if (jsonStrs[0] != null) {
+        String jSon = null;
+        try {
+            jSon = new JSonFetcher().fetch(url[0]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        if (jSon != null) {
             try {
-                JSONObject jsonObj = new JSONObject(jsonStrs[0]);
+                JSONObject jsonObj = new JSONObject(jSon);
 
                 /* Get JSON Array */
                 JSONArray goals = jsonObj.getJSONArray(GOALS);
@@ -57,7 +68,7 @@ public class GoalItemLoaderTask extends AsyncTask<String, Void, Integer> {
                     JSONObject g = goals.getJSONObject(i);
 
                     GoalItem item = new GoalItem()
-                            .setGoalId(g.getInt(GOAL_ID))
+                            .setId(g.getInt(GOAL_ID))
                             .setCurrentBalance(g.optDouble(GOAL_CURRENT_BALANCE, 0))
                             .setSavingsTarget(g.optDouble(GOAL_TARGET, 0))
                             .setTitle(g.getString(GOAL_NAME))
@@ -76,11 +87,7 @@ public class GoalItemLoaderTask extends AsyncTask<String, Void, Integer> {
     }
 
     @Override
-    protected void onCancelled() {
-    }
-
-    @Override
     protected void onPostExecute(Integer loadedItems) {
-        mListener.onLoadFinished(loadedItems);
+        mListener.onLoadFinished(mList);
     }
 }

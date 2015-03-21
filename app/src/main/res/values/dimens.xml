@@ -1,6 +1,8 @@
 <resources>
     <!-- Outer margins for list items in the Goal List. -->
     <dimen name="goal_list_item_margin">8dp</dimen>
+
     <dimen name="goal_list_progress_bar_margin">40dp</dimen>
     <dimen name="details_view_header_height">180dp</dimen>
+    <dimen name="feed_list_item_height">100dp</dimen>
 </resources>

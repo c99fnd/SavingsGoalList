@@ -1,4 +1,4 @@
-package com.fredde.savingsgoallist.ui.fragments;
+package com.fredde.savingsgoallist.fragments;
 
 import android.app.Activity;
 import android.graphics.Typeface;
@@ -16,14 +16,21 @@ import android.widget.TextView;
 import com.fredde.savingsgoallist.FeedListAdapter;
 import com.fredde.savingsgoallist.GoalsListCallback;
 import com.fredde.savingsgoallist.R;
+import com.fredde.savingsgoallist.data.FeedItem;
+import com.fredde.savingsgoallist.data.FeedItemLoaderTask;
 import com.fredde.savingsgoallist.data.GoalItem;
-import com.fredde.savingsgoallist.utils.TextUtils;
+import com.fredde.savingsgoallist.utils.Utils;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 /**
  * Displays the details view of a savings goal.
  */
-public class DetailsFragment extends Fragment {
+public class DetailsFragment extends Fragment implements FeedItemLoaderTask.LoadListener {
+
+    private final String BASR_URL = "http://qapital-ios-testtask.herokuapp.com/savingsgoals/";
+    private final String FEED = "/feed";
 
     public static final String ARG_ITEM = "goal_item";
 
@@ -37,9 +44,11 @@ public class DetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
         ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mItem = (GoalItem) getArguments().getSerializable(ARG_ITEM);
         mAdapter = new FeedListAdapter(getActivity().getApplicationContext());
+
+        new FeedItemLoaderTask(this).execute(BASR_URL + mItem.getId() + FEED);
     }
 
     @Override
@@ -75,9 +84,9 @@ public class DetailsFragment extends Fragment {
 
 
         TextView moneyText = (TextView) header.findViewById(R.id.details_header_subtitle);
-        moneyText.setText(TextUtils.buildHeaderProgressString(getActivity().getBaseContext(), mItem));
+        moneyText.setText(Utils.buildHeaderProgressString(getActivity().getBaseContext(), mItem.getCurrentBalance(), mItem.getSavingsTarget()));
 
-        TextUtils.setLayoutFont(tf, nameText, moneyText);
+        Utils.setLayoutFont(tf, nameText, moneyText);
 
         list.addHeaderView(header);
         list.setAdapter(mAdapter);
@@ -88,5 +97,12 @@ public class DetailsFragment extends Fragment {
 
     public void updateDetailsView(int goalId) {
         Log.d("Album", "updateDetailsView GoalId " + goalId);
+    }
+
+    @Override
+    public void onLoadFinished(List<FeedItem> data) {
+        FeedItem[] items = data.toArray(new FeedItem[data.size()]);
+        mAdapter.setData(items);
+        mAdapter.notifyDataSetChanged();
     }
 }

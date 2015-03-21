@@ -12,7 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fredde.savingsgoallist.data.GoalItem;
-import com.fredde.savingsgoallist.utils.TextUtils;
+import com.fredde.savingsgoallist.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -85,10 +85,10 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
             view = LayoutInflater.from(mContext).inflate(R.layout.goals_list_item, parent, false);
 
             holder.title = (TextView) view.findViewById(R.id.list_item_title);
-            TextUtils.setLayoutFont(mTypefaceNorm, holder.title);
+            Utils.setLayoutFont(mTypefaceNorm, holder.title);
 
             holder.subTitle = (TextView) view.findViewById(R.id.list_item_subtitle);
-            TextUtils.setLayoutFont(mTypefaceLight, holder.subTitle);
+            Utils.setLayoutFont(mTypefaceLight, holder.subTitle);
 
             holder.imageView = (ImageView) view.findViewById(R.id.list_item_image);
             holder.progress = (ProgressBar) view.findViewById(R.id.list_item_progress);
@@ -116,7 +116,7 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
      */
     private void setDataToHolder(ViewHolder holder, GoalItem item) {
         holder.title.setText(item.getTitle());
-        holder.subTitle.setText(TextUtils.buildListProgressString(mContext, item));
+        holder.subTitle.setText(Utils.buildListProgressString(mContext, item.getCurrentBalance(), item.getSavingsTarget()));
         holder.progress.setProgress(calculateProgress(holder, item));
         Picasso.with(mContext).load(item.getImageUrl()).placeholder(R.drawable.list_placeholder).into(holder.imageView);
     }

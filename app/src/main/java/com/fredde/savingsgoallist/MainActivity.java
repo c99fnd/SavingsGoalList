@@ -5,22 +5,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.fredde.savingsgoallist.data.GoalItem;
 import com.fredde.savingsgoallist.data.GoalItemLoaderTask;
-import com.fredde.savingsgoallist.http.DownloadJSonTask;
-import com.fredde.savingsgoallist.http.DownloadListener;
-import com.fredde.savingsgoallist.ui.fragments.DetailsFragment;
-import com.fredde.savingsgoallist.ui.fragments.GoalsListFragment;
-import com.fredde.savingsgoallist.utils.DebugUtils;
+import com.fredde.savingsgoallist.fragments.DetailsFragment;
+import com.fredde.savingsgoallist.fragments.GoalsListFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity implements GoalsListCallback, DownloadListener, GoalItemLoaderTask.LoadListener {
+public class MainActivity extends ActionBarActivity implements GoalsListCallback {
 
     private static final String LIST_TAG = "listFragment";
     private static final String DETAILS_TAG = "detailsFragment";
@@ -39,6 +35,9 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
         if (savedInstanceState != null) {
             return;
         }
+
+        /* Set a listener to the back stack to be able to do simple UI operations depending
+           on the stack state. */
         getSupportFragmentManager().addOnBackStackChangedListener(
                 new FragmentManager.OnBackStackChangedListener() {
                     public void onBackStackChanged() {
@@ -55,9 +54,9 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
 
         Picasso.with(getApplicationContext()).setLoggingEnabled(true);
 
-        mLoadGoalsTask = new GoalItemLoaderTask(mData, this);
-        DownloadJSonTask task = new DownloadJSonTask(this);
-        task.execute(SAVINGS);
+        //mLoadGoalsTask = new GoalItemLoaderTask(mData, this);
+        //DownloadJSonTask task = new DownloadJSonTask(this);
+        //task.execute(SAVINGS);
 
     }
 
@@ -69,7 +68,6 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        DebugUtils.log("onOptionsItemSelected");
         switch (item.getItemId()) {
             case android.R.id.home:
                 getSupportFragmentManager().popBackStack();
@@ -94,30 +92,6 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
         } else {
             createAndAddDetailsFragment(args);
         }
-    }
-
-    @Override
-    public void onDownloadFinished(String jsonStr) {
-        mLoadGoalsTask.execute(jsonStr);
-    }
-
-    @Override
-    public void onDownloadCanceled() {
-        Toast.makeText(getApplicationContext(), "Connection canceled", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onDownloadFailed() {
-        Toast.makeText(getApplicationContext(), "Connection Failed", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onLoadFinished(int itemsLoaded) {
-        GoalsListFragment frag = (GoalsListFragment) getSupportFragmentManager().findFragmentByTag(LIST_TAG);
-        GoalsListAdapter adapter = frag.getAdapter();
-        GoalItem[] items = mData.toArray(new GoalItem[mData.size()]);
-        adapter.setData(items);
-        adapter.notifyDataSetChanged();
     }
 
     /**

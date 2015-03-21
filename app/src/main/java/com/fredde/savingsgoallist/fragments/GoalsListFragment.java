@@ -1,4 +1,4 @@
-package com.fredde.savingsgoallist.ui.fragments;
+package com.fredde.savingsgoallist.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,11 +13,18 @@ import com.fredde.savingsgoallist.GoalsListAdapter;
 import com.fredde.savingsgoallist.GoalsListCallback;
 import com.fredde.savingsgoallist.R;
 import com.fredde.savingsgoallist.data.GoalItem;
+import com.fredde.savingsgoallist.data.GoalItemLoaderTask;
+
+import java.util.List;
 
 /**
  * Displays a list of savings goals. Is the start view in the application.
  */
-public class GoalsListFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class GoalsListFragment extends Fragment implements AdapterView.OnItemClickListener,
+        GoalItemLoaderTask.LoadListener {
+
+    private final String BASE_URL = "http://qapital-ios-testtask.herokuapp.com/";
+    private final String SAVINGS = BASE_URL + "savingsgoals";
 
     GoalsListCallback mCallback;
 
@@ -34,7 +41,7 @@ public class GoalsListFragment extends Fragment implements AdapterView.OnItemCli
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         mAdapter = new GoalsListAdapter(getActivity().getApplicationContext());
-
+        new GoalItemLoaderTask(this).execute(SAVINGS);
     }
 
     @Override
@@ -67,12 +74,10 @@ public class GoalsListFragment extends Fragment implements AdapterView.OnItemCli
         mCallback.onGoalSelected(item);
     }
 
-    /**
-     * Gets the adapter
-     *
-     * @return the adapter.
-     */
-    public GoalsListAdapter getAdapter() {
-        return mAdapter;
+    @Override
+    public void onLoadFinished(List<GoalItem> data) {
+        GoalItem[] items = data.toArray(new GoalItem[data.size()]);
+        mAdapter.setData(items);
+        mAdapter.notifyDataSetChanged();
     }
 }

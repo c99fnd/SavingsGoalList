@@ -1,6 +1,7 @@
 package com.fredde.savingsgoallist;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,12 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.fredde.savingsgoallist.data.FeedItem;
+import com.fredde.savingsgoallist.utils.Utils;
 
 public class FeedListAdapter extends BaseAdapter implements ListAdapter {
 
     private final Context mContext;
+
     /**
      * Data
      */
@@ -23,9 +26,10 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
      * View holder.
      */
     static class ViewHolder {
-        TextView title;
-        TextView subTitle;
-        ImageView imageView;
+        TextView message;
+        TextView ammount;
+        ImageView avatarImage;
+
     }
 
     /**
@@ -33,10 +37,7 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
      */
     public FeedListAdapter(Context context) {
         mContext = context;
-        mItems = new FeedItem[1];
-        FeedItem item = new FeedItem().setUserId(666);
-        mItems[0] = item;
-
+        mItems = new FeedItem[0];
     }
 
     @Override
@@ -63,7 +64,9 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
         if (view == null) {
             holder = new ViewHolder();
             view = LayoutInflater.from(mContext).inflate(R.layout.details_feed_list_item, parent, false);
-            holder.title = (TextView) view.findViewById(R.id.list_item_title);
+            holder.message = (TextView) view.findViewById(R.id.feed_item_message);
+            holder.ammount = (TextView) view.findViewById(R.id.feed_item_ammount);
+            holder.avatarImage = (ImageView) view.findViewById(R.id.feed_item_avatar_image);
             view.setTag(holder);
         }
         holder = (ViewHolder) view.getTag();
@@ -71,7 +74,18 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
         return view;
     }
 
+    /**
+     * Sets new data.
+     *
+     * @param items The data to set.
+     */
+    public void setData(FeedItem[] items) {
+        mItems = items.clone();
+    }
+
     private void setDataToHolder(ViewHolder holder, FeedItem item) {
-        holder.title.setText("" + item.getUserId());
+        holder.message.setText(Html.fromHtml(item.getMessage()));
+        holder.ammount.setText(Utils.buildAmountString(item.getAmount()));
+        // Picasso.with(mContext).load(item.getUserId()).placeholder(R.drawable.list_placeholder).into(holder.avatarImage);
     }
 }

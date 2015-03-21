@@ -133,7 +133,7 @@ public class GoalItem implements Serializable {
      *
      * @return The id.
      */
-    public int getGoalId() {
+    public int getId() {
         return mId;
     }
 
@@ -143,7 +143,7 @@ public class GoalItem implements Serializable {
      * @param id The id to set.
      * @return this
      */
-    public GoalItem setGoalId(int id) {
+    public GoalItem setId(int id) {
         mId = id;
         return this;
     }

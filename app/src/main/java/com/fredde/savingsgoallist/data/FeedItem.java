@@ -4,7 +4,7 @@ public class FeedItem {
     /**
      * The feed Id.
      */
-    private String mid;
+    private String mId;
 
     /**
      * The type (saving")
@@ -19,12 +19,12 @@ public class FeedItem {
     /**
      * Message string. (html style elements)
      */
-    private String mMessage;
+    private String mMsg;
 
     /**
      * The amount saved in the feed.
      */
-    private double mAmountSaved;
+    private double mAmount;
 
     /**
      * User Id of event creator.
@@ -40,6 +40,52 @@ public class FeedItem {
      * The resource Id of the rule.
      */
     private int mResId;
+
+
+    public String getId() {
+        return mId;
+    }
+
+    public FeedItem setId(String id) {
+        mId = id;
+        return this;
+    }
+
+    public String getType() {
+        return mType;
+    }
+
+    public FeedItem setType(String type) {
+        mType = type;
+        return this;
+    }
+
+    public String getTimeStamp() {
+        return mTimeStamp;
+    }
+
+    public FeedItem setTimeStamp(String timestamp) {
+        mTimeStamp = timestamp;
+        return this;
+    }
+
+    public String getMessage() {
+        return mMsg;
+    }
+
+    public FeedItem setMessage(String msg) {
+        mMsg = msg;
+        return this;
+    }
+
+    public double getAmount() {
+        return mAmount;
+    }
+
+    public FeedItem setAmount(double amount) {
+        mAmount = amount;
+        return this;
+    }
 
     /**
      * Gets user ID.
