@@ -1,7 +1,6 @@
 package com.fredde.savingsgoallist.data;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Data representation of a Savings Goal.
@@ -41,12 +40,17 @@ public class GoalItem implements Serializable {
     /**
      * List of users this goal is shared with.
      */
-    private List<Integer> mConnectedUserIds;
+    private int mConnectedIds[] = new int[0];
 
     /**
      * Title of this goal.
      */
     private String mTitle;
+
+    /**
+     * List of avatar URLSs.
+     */
+    private String mAvatarURLS[] = new String[0];
 
     /**
      * Gets goal title.
@@ -189,21 +193,42 @@ public class GoalItem implements Serializable {
     }
 
     /**
-     * Get a list of ids for users sharing this goal.
+     * Gets (a copy) of a list of ids for users sharing this goal.
      *
      * @return list of users
      */
-    public List<Integer> getConnectedUserIds() {
-        return mConnectedUserIds;
+    public int[] getConnectedIds() {
+        return mConnectedIds.clone();
     }
 
     /**
-     * Set connected users.
+     * Sets a list of connected users.
      *
-     * @param users list of users
+     * @param ids list of users ids
+     * @return this.
      */
-    public GoalItem setConnectedUserIds(List<Integer> users) {
-        mConnectedUserIds = users;
+    public GoalItem setConnectedUserIds(int[] ids) {
+        mConnectedIds = ids.clone();
+        return this;
+    }
+
+    /**
+     * Gets a list of avatar urls.
+     *
+     * @return List of urls.
+     */
+    public String[] getAvatarURLS() {
+        return mAvatarURLS;
+    }
+
+    /**
+     * Sets a list of avatar urls.
+     *
+     * @param urls list of urls
+     * @return this.
+     */
+    public GoalItem setAvatarUrls(String[] urls) {
+        mAvatarURLS = urls.clone();
         return this;
     }
 }

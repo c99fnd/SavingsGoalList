@@ -18,17 +18,16 @@ import java.util.List;
  */
 public class GoalItemLoaderTask extends AsyncTask<String, Void, Integer> {
 
-    // JSON Node names
+    /* JSON Node names. */
     private static final String GOALS = "savingsGoals";
-    private static final String GOAL_ID = "id";
-    private static final String GOAL_IMAGE_URL = "goalImageURL";
-    private static final String GOAL_USER_ID = "userId";
-    private static final String GOAL_TARGET = "targetAmount";
-    private static final String GOAL_CURRENT_BALANCE = "currentBalance";
-    private static final String GOAL_CREATED = "created";
-    private static final String GOAL_STATUS = "status";
-    private static final String GOAL_NAME = "name";
-    private static final String GOAL_CONNECTED_USERS_LIST = "connectedUsers";
+    private static final String ID = "id";
+    private static final String IMAGE_URL = "goalImageURL";
+    private static final String OWNER_ID = "userId";
+    private static final String TARGET_AMOUNT = "targetAmount";
+    private static final String CURRENT_AMOUNT = "currentBalance";
+    private static final String STATUS = "status";
+    private static final String NAME = "name";
+    private static final String CONNECTED_IDS = "connectedUsers";
 
     /**
      * List where the items will be stored.
@@ -88,15 +87,23 @@ public class GoalItemLoaderTask extends AsyncTask<String, Void, Integer> {
                     JSONObject g = goals.getJSONObject(i);
 
                     GoalItem item = new GoalItem()
-                            .setId(g.getInt(GOAL_ID))
-                            .setCurrentBalance(g.optDouble(GOAL_CURRENT_BALANCE, 0))
-                            .setSavingsTarget(g.optDouble(GOAL_TARGET, 0))
-                            .setTitle(g.getString(GOAL_NAME))
-                            .setImageUrl(g.getString(GOAL_IMAGE_URL))
-                            .setUserId(g.getInt(GOAL_USER_ID))
-                            .setStatus(g.getString(GOAL_STATUS));
-                    // Integer[] users = g.getJSONArray()
+                            .setId(g.getInt(ID))
+                            .setCurrentBalance(g.optDouble(CURRENT_AMOUNT, 0))
+                            .setSavingsTarget(g.optDouble(TARGET_AMOUNT, 0))
+                            .setTitle(g.getString(NAME))
+                            .setImageUrl(g.getString(IMAGE_URL))
+                            .setUserId(g.getInt(OWNER_ID))
+                            .setStatus(g.getString(STATUS));
 
+                    /* Get JSON Array for connected users. Connected users can be null. */
+                    if (!g.isNull(CONNECTED_IDS)) {
+                        JSONArray jIds = g.getJSONArray(CONNECTED_IDS);
+                        int ids[] = new int[jIds.length()];
+                        for (int j = 0; j < jIds.length(); j++) {
+                            ids[j] = jIds.getInt(j);
+                        }
+                        item.setConnectedUserIds(ids);
+                    }
                     mList.add(item);
                 }
             } catch (JSONException e) {

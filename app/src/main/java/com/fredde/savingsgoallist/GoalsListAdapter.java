@@ -47,9 +47,8 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
         TextView title;
         TextView subTitle;
         ImageView imageView;
+        ImageView avatarImageView;
         ProgressBar progress;
-        String progressText;
-        int position;
     }
 
     public GoalsListAdapter(Context context) {
@@ -108,6 +107,10 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
         mItems = items.clone();
     }
 
+    public GoalItem[] getData() {
+        return mItems;
+    }
+
     /**
      * Sets data from GoalItem to HolderView.
      *
@@ -118,7 +121,14 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
         holder.title.setText(item.getTitle());
         holder.subTitle.setText(Utils.buildListProgressString(mContext, item.getCurrentBalance(), item.getSavingsTarget()));
         holder.progress.setProgress(calculateProgress(holder, item));
+
         Picasso.with(mContext).load(item.getImageUrl()).placeholder(R.drawable.list_placeholder).into(holder.imageView);
+
+        /*
+        String[] url = item.getAvatarURLS();
+        if (url.length > 0) {
+            Log.d("Fredde", "Url " + url[0]);
+        }*/
     }
 
     /**

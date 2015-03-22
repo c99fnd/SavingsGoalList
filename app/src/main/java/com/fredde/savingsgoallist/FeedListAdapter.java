@@ -96,7 +96,10 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
         holder.amount.setText(Utils.buildAmountString(item.getAmount()));
         holder.timestamp.setText(item.getTimeStamp());
         holder.badgeImage.setImageResource(getBadgeResId(item.getType()));
-        Picasso.with(mContext).load("http://qapital-ios-testtask.herokuapp.com/avatars/johan.jpg")
+
+        Picasso picasso = Picasso.with(mContext);
+        picasso.load(getBadgeResId(item.getType())).into(holder.badgeImage);
+        picasso.load("http://qapital-ios-testtask.herokuapp.com/avatars/johan.jpg")
                 .placeholder(R.drawable.list_placeholder).into(holder.avatarImage);
     }
 
@@ -107,6 +110,5 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
             default:
                 return R.drawable.rule_roundup;
         }
-
     }
 }

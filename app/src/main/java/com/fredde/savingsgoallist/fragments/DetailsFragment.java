@@ -22,6 +22,7 @@ import com.fredde.savingsgoallist.R;
 import com.fredde.savingsgoallist.data.FeedItem;
 import com.fredde.savingsgoallist.data.FeedItemLoaderTask;
 import com.fredde.savingsgoallist.data.GoalItem;
+import com.fredde.savingsgoallist.http.QaptialApi;
 import com.fredde.savingsgoallist.utils.Utils;
 import com.squareup.picasso.Picasso;
 
@@ -31,14 +32,6 @@ import java.util.List;
  * Displays the details view of a savings goal.
  */
 public class DetailsFragment extends Fragment implements FeedItemLoaderTask.LoadListener {
-
-    /**
-     * URLs
-     */
-    private final String BASR_URL = "http://qapital-ios-testtask.herokuapp.com/savingsgoals/";
-    private final String FEED = "/feed";
-
-
     public static final String ARG_ITEM = "goal_item";
 
     public GoalItem mItem;
@@ -54,7 +47,7 @@ public class DetailsFragment extends Fragment implements FeedItemLoaderTask.Load
         setHasOptionsMenu(true);
         mItem = (GoalItem) getArguments().getSerializable(ARG_ITEM);
         mAdapter = new FeedListAdapter(getActivity().getApplicationContext());
-        new FeedItemLoaderTask(this).execute(BASR_URL + mItem.getId() + FEED);
+        new FeedItemLoaderTask(this).execute(QaptialApi.getFeedUrl(mItem.getId()));
     }
 
     @Override

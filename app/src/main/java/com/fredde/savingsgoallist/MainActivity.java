@@ -22,6 +22,7 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
         if (savedInstanceState != null) {
             return;
         }
+
         /* Set a listener to the back stack to be able to do simple UI operations depending
            on the stack state. */
         getSupportFragmentManager().addOnBackStackChangedListener(

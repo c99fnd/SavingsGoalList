@@ -19,6 +19,7 @@ import com.fredde.savingsgoallist.GoalsListCallback;
 import com.fredde.savingsgoallist.R;
 import com.fredde.savingsgoallist.data.GoalItem;
 import com.fredde.savingsgoallist.data.GoalItemLoaderTask;
+import com.fredde.savingsgoallist.http.QaptialApi;
 
 import java.util.List;
 
@@ -27,9 +28,6 @@ import java.util.List;
  */
 public class GoalsListFragment extends Fragment implements AdapterView.OnItemClickListener,
         GoalItemLoaderTask.LoadListener {
-
-    private final String BASE_URL = "http://qapital-ios-testtask.herokuapp.com/";
-    private final String SAVINGS = BASE_URL + "savingsgoals";
 
     GoalsListCallback mCallback;
 
@@ -47,7 +45,7 @@ public class GoalsListFragment extends Fragment implements AdapterView.OnItemCli
         setRetainInstance(true);
         setHasOptionsMenu(true);
         mAdapter = new GoalsListAdapter(getActivity().getApplicationContext());
-        new GoalItemLoaderTask(this).execute(SAVINGS);
+        new GoalItemLoaderTask(this).execute(QaptialApi.getSavingsURL());
     }
 
     @Override
@@ -65,8 +63,6 @@ public class GoalsListFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        /* Make Sure the hosting acitivity implements OnGoalSelectedListener.
-        If not, information cannot be sent back. */
 
         try {
             mCallback = (GoalsListCallback) activity;
@@ -85,6 +81,7 @@ public class GoalsListFragment extends Fragment implements AdapterView.OnItemCli
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_goal:
+                mAdapter.notifyDataSetChanged();
                 Toast.makeText(getActivity().getBaseContext(), "Add new goal not implemented yet.", Toast.LENGTH_SHORT).show();
                 return true;
         }
