@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import com.fredde.savingsgoallist.data.GoalItem;
 import com.fredde.savingsgoallist.fragments.DetailsFragment;
 import com.fredde.savingsgoallist.fragments.GoalsListFragment;
-import com.squareup.picasso.Picasso;
 
 
 public class MainActivity extends ActionBarActivity implements GoalsListCallback {
@@ -23,7 +22,6 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
         if (savedInstanceState != null) {
             return;
         }
-
         /* Set a listener to the back stack to be able to do simple UI operations depending
            on the stack state. */
         getSupportFragmentManager().addOnBackStackChangedListener(
@@ -40,9 +38,6 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, new GoalsListFragment(), LIST_TAG)
                 .commit();
-
-
-        Picasso.with(getApplicationContext()).setLoggingEnabled(true);
     }
 
     @Override
