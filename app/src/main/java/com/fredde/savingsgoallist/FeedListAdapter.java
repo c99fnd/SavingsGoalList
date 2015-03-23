@@ -33,6 +33,9 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
      */
     private FeedItem[] mItems;
 
+    /**
+     * Map containing avatar url strings.
+     */
     private static Map sAvatarMap = new HashMap<Integer, String>();
 
     /**
@@ -45,6 +48,7 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
         ImageView avatarImage;
         ImageView badgeImage;
         int userId;
+        AsyncTask<?, ?, ?> task;
     }
 
     /**
@@ -100,7 +104,16 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
         mItems = items.clone();
     }
 
+    /**
+     * Prepares a ViewHolder by adding data from the {@Feeditem}.
+     *
+     * @param holder The ViewHolder to prepare.
+     * @param item   The item to get data from.
+     */
     private void prepareHolder(ViewHolder holder, FeedItem item) {
+        if (holder.task != null) {
+            holder.task.cancel(false);
+        }
         holder.message.setText(Html.fromHtml(item.getMessage()));
         holder.amount.setText(Utils.buildAmountString(item.getAmount()));
         holder.timestamp.setText(item.getTimeStamp());
@@ -108,15 +121,15 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
         holder.userId = item.getUserId();
         Picasso.with(mContext).load(getBadgeResId(item.getType())).into(holder.badgeImage);
 
-
-        /* Check map for avatar url. */
-        String url = (String) sAvatarMap.get(holder.userId);
-        if (url != null) {
+        final int key = holder.userId;
+        if (sAvatarMap.containsKey(key)) {
+              /* Check map for avatar url. */
+            String url = (String) sAvatarMap.get(key);
             Picasso.with(mContext).load(url)
                     .placeholder(R.drawable.list_placeholder).into(holder.avatarImage);
         } else {
             holder.avatarImage.setVisibility(View.INVISIBLE);
-            new AvatarImageTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, holder);
+            holder.task = new AvatarImageTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, holder);
         }
     }
 
@@ -137,6 +150,9 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
 
         @Override
         protected String doInBackground(ViewHolder... params) {
+            if (isCancelled()) {
+                return null;
+            }
             mHolder = params[0];
             String url = null;
             try {
