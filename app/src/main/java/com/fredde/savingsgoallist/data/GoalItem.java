@@ -48,11 +48,6 @@ public class GoalItem implements Serializable {
     private String mTitle;
 
     /**
-     * List of avatar URLSs.
-     */
-    private String mAvatarURLS[] = new String[0];
-
-    /**
      * Gets goal title.
      *
      * @return The tile of the goal.

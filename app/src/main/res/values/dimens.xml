@@ -1,18 +1,25 @@
 <resources>
-    <!-- Outer margins for list items in the Goal List. -->
+    <!-- Goals list dimens -->
     <dimen name="goal_list_item_margin">8dp</dimen>
-
     <dimen name="goal_list_progress_bar_margin">40dp</dimen>
-    <dimen name="details_view_header_height">180dp</dimen>
-    <dimen name="feed_list_item_height">80dp</dimen>
-    <dimen name="feed_list_padding">10dp</dimen>
-    <dimen name="feed_list_badge_margin">10dp</dimen>
 
-
+    <!-- Floating add button dimens -->
     <dimen name="add_button_diameter_large">56dp</dimen>
     <dimen name="add_button_diameter_small">40dp</dimen>
     <dimen name="add_button_margin">16dp</dimen>
     <dimen name="elevation_low">1dp</dimen>
     <dimen name="elevation_high">4dp</dimen>
+
+    <!-- Goal list avatar grid dimens -->
+    <dimen name="goal_list_avatar_image_size">60dp</dimen>
+    <dimen name="goal_list_avatar_grid_margin">20dp</dimen>
+    <dimen name="goal_list_avatar_image_padding">3dp</dimen>
+    <dimen name="goal_list_avatar_image_margin">3dp</dimen>
+
+    <!-- Detail view dimens -->
+    <dimen name="details_view_header_height">180dp</dimen>
+    <dimen name="feed_list_item_height">80dp</dimen>
+    <dimen name="feed_list_padding">10dp</dimen>
+    <dimen name="feed_list_badge_margin">10dp</dimen>
 
 </resources>
