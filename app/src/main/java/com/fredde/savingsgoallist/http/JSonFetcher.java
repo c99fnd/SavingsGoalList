@@ -18,7 +18,7 @@ public class JSonFetcher {
     private final static int TIMEOUT = 10000;
 
     /**
-     *
+     * Constructor.
      */
     public JSonFetcher() {
     }

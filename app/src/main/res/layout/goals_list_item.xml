@@ -23,8 +23,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/goal_list_avatar_grid_margin"
             android:columnWidth="@dimen/goal_list_avatar_image_size"
-            android:horizontalSpacing="2dp"
-            android:verticalSpacing="5dp" />
+            android:horizontalSpacing="@dimen/goals_list_grid_view_spacing"
+            android:verticalSpacing="@dimen/goals_list_grid_view_spacing" />
 
         <LinearLayout
             android:id="@+id/list_item_info_container"
@@ -39,7 +39,7 @@
                 style="@style/TextStyle.List.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/goal_list_item_text_margin"
                 android:gravity="center_horizontal" />
 
             <TextView
@@ -47,7 +47,7 @@
                 style="@style/TextStyle.List.Subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/goal_list_item_text_margin"
                 android:gravity="center_horizontal" />
 
             <ProgressBar
@@ -56,11 +56,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginEnd="@dimen/goal_list_progress_bar_margin"
-                android:layout_marginLeft="@dimen/goal_list_progress_bar_margin"
-                android:layout_marginRight="@dimen/goal_list_progress_bar_margin"
-                android:layout_marginStart="@dimen/goal_list_progress_bar_margin"
-                android:layout_marginTop="12dp"
+                android:layout_marginEnd="@dimen/goal_list_progress_bar_margin_side"
+                android:layout_marginLeft="@dimen/goal_list_progress_bar_margin_side"
+                android:layout_marginRight="@dimen/goal_list_progress_bar_margin_side"
+                android:layout_marginStart="@dimen/goal_list_progress_bar_margin_side"
+                android:layout_marginTop="@dimen/goal_list_item_bar_margin_top"
                 android:indeterminate="false"
                 android:max="100"
                 android:progress="50"

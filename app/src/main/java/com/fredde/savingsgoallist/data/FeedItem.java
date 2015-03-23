@@ -35,13 +35,6 @@ public class FeedItem {
     private int mUserId;
 
     /**
-     * The id of the rule the savings fell under. Can be
-     */
-    private int mSavingsRuleId;
-
-
-
-    /**
      * Gets the ID.
      *
      * @return The Id for this item.

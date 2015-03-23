@@ -26,9 +26,9 @@ import java.util.List;
 public class GoalsListFragment extends Fragment implements AdapterView.OnItemClickListener,
         GoalItemLoaderTask.LoadListener {
 
-    GoalsListCallback mCallback;
+    private GoalsListCallback mCallback;
 
-    GoalsListAdapter mAdapter;
+    private GoalsListAdapter mAdapter;
 
     /**
      * Constructor.

@@ -227,10 +227,10 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
         }
 
         /**
-         * Calculates a new grid with based on grid image size and number of images.
+         * Calculates a new grid witdth based on grid image size and number of images.
          *
-         * @param numImages
-         * @return
+         * @param numImages Number of images that will be shonw in the grid.
+         * @return New width.
          */
         private int calculateGridWidth(int numImages) {
             int margin = (int) mContext.getResources().getDimension(R.dimen.goal_list_avatar_image_margin);
@@ -239,9 +239,15 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
         }
     }
 
+    /**
+     * Responsible for populating the avatar grid that shows avatars for connected users.
+     */
     private class AvatarGridAdapter extends BaseAdapter {
         private String[] mData;
 
+        /**
+         * Constructor.
+         */
         public AvatarGridAdapter() {
             mData = new String[0];
         }
@@ -265,7 +271,8 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
         public View getView(int position, View convertView, ViewGroup parent) {
             ImageView imageView;
             if (convertView == null) {
-                imageView = (ImageView) LayoutInflater.from(mContext).inflate(R.layout.goals_list_avatar_image, parent, false);
+                imageView = (ImageView) LayoutInflater.from(mContext)
+                        .inflate(R.layout.goals_list_avatar_image, parent, false);
             } else {
                 imageView = (ImageView) convertView;
             }
@@ -274,6 +281,11 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
             return imageView;
         }
 
+        /**
+         * Sets data to the adapter
+         *
+         * @param url Array containing urls in string format.
+         */
         public void setData(String[] url) {
             mData = url.clone();
         }

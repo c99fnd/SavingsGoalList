@@ -34,11 +34,11 @@ import java.util.List;
 public class DetailsFragment extends Fragment implements FeedItemLoaderTask.LoadListener {
     public static final String ARG_ITEM = "goal_item";
 
-    public GoalItem mItem;
+    private GoalItem mItem;
 
-    GoalsListCallback mCallback;
+    private GoalsListCallback mCallback;
 
-    FeedListAdapter mAdapter;
+    private FeedListAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
