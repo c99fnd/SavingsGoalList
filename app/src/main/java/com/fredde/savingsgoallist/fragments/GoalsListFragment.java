@@ -52,6 +52,17 @@ public class GoalsListFragment extends Fragment implements AdapterView.OnItemCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.goals_list_fragment, container, false);
+
+        /* The add button. */
+        View addButton = rootView.findViewById(R.id.add_button);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity().getBaseContext(), "Add new goal not implemented yet.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        /* The goal list. */
         ListView list = (ListView) rootView.findViewById(R.id.goals_list_view);
         list.setOnItemClickListener(this);
         list.setAdapter(mAdapter);

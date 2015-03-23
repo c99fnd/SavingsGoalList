@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorPrimaryDark">@android:color/darker_gray</item>
+        <item name="android:colorAccent">@android:color/holo_green_light</item>
+    </style>
+
+    <style name="TextStyle.List.AmountText" parent="Base.TextAppearance.AppCompat.Headline">
+        <item name="android:textColor">?android:colorAccent</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
+</resources>
