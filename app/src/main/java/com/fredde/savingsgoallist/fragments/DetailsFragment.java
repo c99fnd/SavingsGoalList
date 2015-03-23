@@ -22,7 +22,7 @@ import com.fredde.savingsgoallist.R;
 import com.fredde.savingsgoallist.data.FeedItem;
 import com.fredde.savingsgoallist.data.FeedItemLoaderTask;
 import com.fredde.savingsgoallist.data.GoalItem;
-import com.fredde.savingsgoallist.http.QaptialApi;
+import com.fredde.savingsgoallist.http.QapitalApi;
 import com.fredde.savingsgoallist.utils.Utils;
 import com.squareup.picasso.Picasso;
 
@@ -47,7 +47,7 @@ public class DetailsFragment extends Fragment implements FeedItemLoaderTask.Load
         setHasOptionsMenu(true);
         mItem = (GoalItem) getArguments().getSerializable(ARG_ITEM);
         mAdapter = new FeedListAdapter(getActivity().getApplicationContext());
-        new FeedItemLoaderTask(this).execute(QaptialApi.getFeedUrl(mItem.getId()));
+        new FeedItemLoaderTask(this).execute(QapitalApi.getFeedUrl(mItem.getId()));
     }
 
     @Override

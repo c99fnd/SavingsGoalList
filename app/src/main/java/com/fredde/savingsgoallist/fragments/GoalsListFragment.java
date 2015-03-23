@@ -19,7 +19,7 @@ import com.fredde.savingsgoallist.GoalsListCallback;
 import com.fredde.savingsgoallist.R;
 import com.fredde.savingsgoallist.data.GoalItem;
 import com.fredde.savingsgoallist.data.GoalItemLoaderTask;
-import com.fredde.savingsgoallist.http.QaptialApi;
+import com.fredde.savingsgoallist.http.QapitalApi;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class GoalsListFragment extends Fragment implements AdapterView.OnItemCli
         setRetainInstance(true);
         setHasOptionsMenu(true);
         mAdapter = new GoalsListAdapter(getActivity().getApplicationContext());
-        new GoalItemLoaderTask(this).execute(QaptialApi.getSavingsURL());
+        new GoalItemLoaderTask(this).execute(QapitalApi.getSavingsURL());
     }
 
     @Override

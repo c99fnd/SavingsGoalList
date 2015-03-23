@@ -1,6 +1,7 @@
 package com.fredde.savingsgoallist;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,14 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.fredde.savingsgoallist.data.FeedItem;
+import com.fredde.savingsgoallist.http.AvatarUrlFetcher;
 import com.fredde.savingsgoallist.utils.Utils;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FeedListAdapter extends BaseAdapter implements ListAdapter {
 
@@ -26,6 +33,8 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
      */
     private FeedItem[] mItems;
 
+    private static Map sAvatarMap = new HashMap<Integer, String>();
+
     /**
      * View holder.
      */
@@ -35,7 +44,7 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
         TextView timestamp;
         ImageView avatarImage;
         ImageView badgeImage;
-
+        int userId;
     }
 
     /**
@@ -78,7 +87,7 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
             view.setTag(holder);
         }
         holder = (ViewHolder) view.getTag();
-        setDataToHolder(holder, item);
+        prepareHolder(holder, item);
         return view;
     }
 
@@ -91,24 +100,88 @@ public class FeedListAdapter extends BaseAdapter implements ListAdapter {
         mItems = items.clone();
     }
 
-    private void setDataToHolder(ViewHolder holder, FeedItem item) {
+    private void prepareHolder(ViewHolder holder, FeedItem item) {
         holder.message.setText(Html.fromHtml(item.getMessage()));
         holder.amount.setText(Utils.buildAmountString(item.getAmount()));
         holder.timestamp.setText(item.getTimeStamp());
         holder.badgeImage.setImageResource(getBadgeResId(item.getType()));
+        holder.userId = item.getUserId();
+        Picasso.with(mContext).load(getBadgeResId(item.getType())).into(holder.badgeImage);
 
-        Picasso picasso = Picasso.with(mContext);
-        picasso.load(getBadgeResId(item.getType())).into(holder.badgeImage);
-        picasso.load("http://qapital-ios-testtask.herokuapp.com/avatars/johan.jpg")
-                .placeholder(R.drawable.list_placeholder).into(holder.avatarImage);
+
+        /* Check map for avatar url. */
+        String url = (String) sAvatarMap.get(holder.userId);
+        if (url != null) {
+            Picasso.with(mContext).load(url)
+                    .placeholder(R.drawable.list_placeholder).into(holder.avatarImage);
+        } else {
+            holder.avatarImage.setVisibility(View.INVISIBLE);
+            new AvatarImageTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, holder);
+        }
     }
 
     private int getBadgeResId(String type) {
         switch (type) {
-            case "guilty":
-                return R.drawable.rule_penalty;
-            default:
+            case "roundup":
                 return R.drawable.rule_roundup;
+            default:
+                return R.drawable.rule_penalty;
+        }
+    }
+
+    /**
+     * Responsible for fetching and setting  the avatar image for the feed creating user.
+     */
+    private class AvatarImageTask extends AsyncTask<ViewHolder, Void, String> {
+        private ViewHolder mHolder;
+
+        @Override
+        protected String doInBackground(ViewHolder... params) {
+            mHolder = params[0];
+            String url = null;
+            try {
+                url = new AvatarUrlFetcher().fetch(mHolder.userId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return url;
+        }
+
+        @Override
+        protected void onPostExecute(String url) {
+            mHolder.avatarImage.setVisibility(View.VISIBLE);
+            /* Store the url in the map for future use. */
+            sAvatarMap.put(mHolder.userId, url);
+            Picasso.with(mContext).load(url)
+                    .placeholder(R.drawable.list_placeholder).into(mHolder.avatarImage);
+        }
+    }
+
+    /**
+     * Responsible for fetching a rule for the feed id.
+     */
+    private class SavingsRuleTask extends AsyncTask<ViewHolder, Void, String> {
+        private ViewHolder mHolder;
+
+        @Override
+        protected String doInBackground(ViewHolder... params) {
+            mHolder = params[0];
+            String url = null;
+            try {
+                url = new AvatarUrlFetcher().fetch(mHolder.userId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return url;
+        }
+
+        @Override
+        protected void onPostExecute(String url) {
+            mHolder.avatarImage.setVisibility(View.VISIBLE);
+            /* Store the url in the map for future use. */
+            sAvatarMap.put(mHolder.userId, url);
+            Picasso.with(mContext).load(url)
+                    .placeholder(R.drawable.list_placeholder).into(mHolder.avatarImage);
         }
     }
 }

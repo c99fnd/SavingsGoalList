@@ -211,24 +211,4 @@ public class GoalItem implements Serializable {
         mConnectedIds = ids.clone();
         return this;
     }
-
-    /**
-     * Gets a list of avatar urls.
-     *
-     * @return List of urls.
-     */
-    public String[] getAvatarURLS() {
-        return mAvatarURLS;
-    }
-
-    /**
-     * Sets a list of avatar urls.
-     *
-     * @param urls list of urls
-     * @return this.
-     */
-    public GoalItem setAvatarUrls(String[] urls) {
-        mAvatarURLS = urls.clone();
-        return this;
-    }
 }

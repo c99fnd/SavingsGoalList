@@ -8,15 +8,14 @@ import java.io.IOException;
 /**
  * Retrieves a url string from a user id.
  */
-public class AvatarUrlFetcher {
+public class RuleFetcher {
 
     private static final String AVATAR_URL = "avatarUrl";
 
     /**
      * Constructor
      */
-    public AvatarUrlFetcher() {
-
+    public RuleFetcher() {
     }
 
     /**

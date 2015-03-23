@@ -35,14 +35,10 @@ public class FeedItem {
     private int mUserId;
 
     /**
-     * The name rule the savings fell under.
+     * The id of the rule the savings fell under. Can be
      */
-    private String mRuleString;
+    private int mSavingsRuleId;
 
-    /**
-     * The resource Id of the rule.
-     */
-    private int mResId;
 
 
     /**

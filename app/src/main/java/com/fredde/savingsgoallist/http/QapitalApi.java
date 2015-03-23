@@ -3,9 +3,9 @@ package com.fredde.savingsgoallist.http;
 /**
  * Simple Rest like api.
  */
-public class QaptialApi {
+public class QapitalApi {
 
-    static final String BASE_URL = "http://qapital-ios-testtask.herokuapp.com/";
+    static final String END_POINT = "http://qapital-ios-testtask.herokuapp.com/";
     static final String SAVINGS = "/savingsgoals";
     static final String USERS = "users/";
     static final String FEED = "/feed";
@@ -17,7 +17,7 @@ public class QaptialApi {
      * @return The URL.
      */
     public static String getSavingsURL() {
-        return BASE_URL + SAVINGS;
+        return END_POINT + SAVINGS;
     }
 
     /**
@@ -27,7 +27,7 @@ public class QaptialApi {
      * @return The URL.
      */
     public static String getUserUrl(int id) {
-        return BASE_URL + USERS + id;
+        return END_POINT + USERS + id;
     }
 
     /**
@@ -37,6 +37,6 @@ public class QaptialApi {
      * @return The url.
      */
     public static String getFeedUrl(int id) {
-        return BASE_URL + SAVINGS + "/" + id + FEED;
+        return END_POINT + SAVINGS + "/" + id + FEED;
     }
 }

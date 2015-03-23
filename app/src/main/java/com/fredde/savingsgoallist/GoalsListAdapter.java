@@ -94,7 +94,7 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
             view.setTag(holder);
         }
         holder = (ViewHolder) view.getTag();
-        setDataToHolder(holder, item);
+        prepareHolder(holder, item);
         return view;
     }
 
@@ -117,18 +117,12 @@ public class GoalsListAdapter extends BaseAdapter implements ListAdapter {
      * @param holder The holder to set data to.
      * @param item   The item to get data from.
      */
-    private void setDataToHolder(ViewHolder holder, GoalItem item) {
+    private void prepareHolder(ViewHolder holder, GoalItem item) {
         holder.title.setText(item.getTitle());
         holder.subTitle.setText(Utils.buildListProgressString(mContext, item.getCurrentBalance(), item.getSavingsTarget()));
         holder.progress.setProgress(calculateProgress(holder, item));
 
         Picasso.with(mContext).load(item.getImageUrl()).placeholder(R.drawable.list_placeholder).into(holder.imageView);
-
-        /*
-        String[] url = item.getAvatarURLS();
-        if (url.length > 0) {
-            Log.d("Fredde", "Url " + url[0]);
-        }*/
     }
 
     /**
