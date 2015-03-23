@@ -9,18 +9,14 @@
         android:divider="@null"
         android:drawSelectorOnTop="true" />
 
-    <ImageButton
-        android:id="@+id/add_button"
+    <include
+        layout="@layout/floating_button"
         android:layout_width="@dimen/add_button_diameter_large"
         android:layout_height="@dimen/add_button_diameter_large"
-        android:layout_marginBottom="@dimen/add_button_margin"
-        android:layout_marginEnd="@dimen/add_button_margin"
-        android:layout_marginRight="@dimen/add_button_margin"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:tint="@android:color/white"
-        android:background="@drawable/add_button_background"
-        android:src="@drawable/ic_ab_add"
-        android:elevation="@dimen/elevation_high" />
+        android:layout_marginBottom="@dimen/add_button_margin"
+        android:layout_marginEnd="@dimen/add_button_margin"
+        android:layout_marginRight="@dimen/add_button_margin" />
 </RelativeLayout>
