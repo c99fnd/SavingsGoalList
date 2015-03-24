@@ -1,8 +1,11 @@
 package com.fredde.savingsgoallist;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.MenuItem;
 
 import com.fredde.savingsgoallist.data.GoalItem;
@@ -54,30 +57,24 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
 
     @Override
     public void onGoalSelected(GoalItem item) {
-        DetailsFragment detailsFrag = (DetailsFragment)
-                getSupportFragmentManager().findFragmentById(R.id.details_fragment);
+        DetailsFragment frag = (DetailsFragment)
+                getSupportFragmentManager().findFragmentByTag(DETAILS_TAG);
 
         Bundle args = new Bundle();
         args.putSerializable(DetailsFragment.ARG_ITEM, item);
-        if (detailsFrag != null) {
-            detailsFrag.setArguments(args);
+        if (frag != null) {
+            frag.setArguments(args);
         } else {
-            createAndAddDetailsFragment(args);
+            frag = new DetailsFragment();
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                frag.setEnterTransition(new Slide(Gravity.BOTTOM));
+                frag.setAllowEnterTransitionOverlap(true);
+
+            }
+            frag.setArguments(args);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, frag, DETAILS_TAG)
+                    .addToBackStack(null).commit();
         }
-    }
-
-    /**
-     * Creates the DetailsFragment and adds it using a custom animation.
-     *
-     * @param args Bundle containing the Serializable {@link GoalItem} to display details from.
-     */
-    private void createAndAddDetailsFragment(Bundle args) {
-        DetailsFragment frag = new DetailsFragment();
-
-        frag.setArguments(args);
-        getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_right, R.anim.stay, 0, R.anim.slide_out_right)
-                .replace(R.id.container, frag, DETAILS_TAG)
-                .addToBackStack(null).commit();
     }
 }
