@@ -6,11 +6,11 @@
     <dimen name="goal_list_progress_bar_margin_side">40dp</dimen>
 
     <!-- Goal list avatar grid dimens -->
-    <dimen name="goal_list_avatar_image_size">60dp</dimen>
-    <dimen name="goal_list_avatar_grid_margin">20dp</dimen>
+    <dimen name="goal_list_avatar_image_size">70dp</dimen>
+    <dimen name="goal_list_avatar_grid_margin">10dp</dimen>
     <dimen name="goal_list_avatar_image_padding">3dp</dimen>
     <dimen name="goal_list_avatar_image_margin">3dp</dimen>
-    <dimen name="goals_list_grid_view_spacing">2dp</dimen>
+    <dimen name="goals_list_grid_view_spacing">4dp</dimen>
 
     <!-- Detail view dimens -->
     <dimen name="details_view_header_height">180dp</dimen>

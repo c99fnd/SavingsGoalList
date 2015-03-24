@@ -2,4 +2,12 @@
 <resources>
     <dimen name="details_view_header_height">120dp</dimen>
     <dimen name="feed_list_item_height">60dp</dimen>
+
+    <!-- Goal list avatar grid dimens -->
+    <dimen name="goal_list_avatar_image_size">90dp</dimen>
+    <dimen name="goal_list_avatar_grid_margin">20dp</dimen>
+    <dimen name="goal_list_avatar_image_padding">3dp</dimen>
+    <dimen name="goal_list_avatar_image_margin">3dp</dimen>
+    <dimen name="goals_list_grid_view_spacing">10dp</dimen>
+
 </resources>

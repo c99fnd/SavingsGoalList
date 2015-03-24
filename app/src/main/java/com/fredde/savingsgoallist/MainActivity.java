@@ -4,7 +4,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
+import android.transition.Fade;
 import android.transition.Slide;
+import android.transition.Visibility;
 import android.view.Gravity;
 import android.view.MenuItem;
 
@@ -68,8 +70,8 @@ public class MainActivity extends ActionBarActivity implements GoalsListCallback
             frag = new DetailsFragment();
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 frag.setEnterTransition(new Slide(Gravity.BOTTOM));
+                frag.setExitTransition(new Fade(Visibility.MODE_OUT));
                 frag.setAllowEnterTransitionOverlap(true);
-
             }
             frag.setArguments(args);
             getSupportFragmentManager().beginTransaction()

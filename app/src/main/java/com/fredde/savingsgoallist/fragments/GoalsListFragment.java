@@ -55,7 +55,7 @@ public class GoalsListFragment extends Fragment implements AdapterView.OnItemCli
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity().getBaseContext(), "Add new goal not implemented yet.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getBaseContext(), "Add New Goal.", Toast.LENGTH_SHORT).show();
             }
         });
 
